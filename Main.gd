@@ -112,7 +112,7 @@ func _on_Timer_timeout():
 func to_human_time(time_in_seconds):
 	var minutes = time_in_seconds / 60
 	var seconds = time_in_seconds % 60
-	return str(str(minutes) + ":" + ("%02d" % seconds))
+	return str(minutes) + ":" + ("%02d" % seconds)
 
 func _on_RetryButton_button_down():
 	clear_all()
