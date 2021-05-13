@@ -25,6 +25,11 @@ var current_time = 0
 export(bool) var debug = false
 
 func _ready():
+	# create array with tiles
+	for tile in GUESSES:
+		tiles.push_back(tile)
+		tiles.push_back(tile)
+		
 	shuffle_tiles()
 	# search best score
 	var save_file = File.new()
@@ -34,14 +39,11 @@ func _ready():
 		save_file.close()
 		show_best_score()
 	
+	timer.start()
+	
 func shuffle_tiles():
 	randomize()
-	for tile in GUESSES:
-		tiles.push_back(tile)
-		tiles.push_back(tile)
-	
 	tiles.shuffle()
-	timer.start()
 	
 func _unhandled_input(event):
 	if (!can_choose): return
@@ -61,7 +63,7 @@ func _unhandled_input(event):
 							best_time = current_time
 							show_best_score()
 							save_best_time()
-						reset_timer()
+						timer.stop()
 						retry_button.visible = true
 			swap_state()
 		
@@ -93,8 +95,7 @@ func hide_tiles():
 	tile_map.set_cellv(chosens[1].position, HIDDEN_CELL)
 	can_choose = true
 
-func reset_timer():
-	timer.stop()
+func reset_time():
 	current_time = 0
 	timer_label.text = to_human_time(current_time)
 
@@ -117,6 +118,8 @@ func to_human_time(time_in_seconds):
 func _on_RetryButton_button_down():
 	clear_all()
 	retry_button.visible = false
+	reset_time()
+	timer.start()
 
 func save_best_time():
 	var save_file = File.new()
